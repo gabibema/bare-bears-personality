@@ -35,78 +35,50 @@ bool es_piso_elegido_valido (int piso_elegido){
 bool es_fuerza_grito_valida (int fuerza_grito){
 	return (fuerza_grito>=GRITO_MINIMO && fuerza_grito<=GRITO_MAXIMO);
 }
-void preguntar_canal_tv_favorito(){
+
+void obtener_canal_tv(char* canal_tv){
+
 	printf("Vas a ver televisión un rato, pones el canal de Anime (A), Musica Pop (M) o Limpieza (L): ");
-}
-
-void preguntar_alimento_favorito(){
-	printf("Solo podes guardar un alimento en tu vianda: Bambú (B), Pescado (P), Focas (F) ");
-}
-
-void preguntar_piso_preferido(){
-	printf ("Te compras una torre con tus dos hermanos de 18 pisos. ¿En que piso te gustaría vivir? ");
-}
-
-void preguntar_fuerza_grito(){
-	printf("¡Oh, una rata! ¿Que tan fuerte gritas del 1 al 18? Siendo 1 no gritar y 18 desgarrarse la garganta.");
-}
-
-char obtener_canal_tv(){
-
-	char canal_tv;
-
-	preguntar_canal_tv_favorito();
-	scanf("%c", &canal_tv);
+	scanf("%c", canal_tv);
 	
-	while (!es_canal_valido(canal_tv)){
+	while (!es_canal_valido(*canal_tv)){
 		printf("Un verdadero escandaloso no mira otros canales, ingresa un canal correcto: ");
-		scanf(" %c", &canal_tv);
+		scanf(" %c", canal_tv);
 	}
-
-	return canal_tv;
 }
 
+void obtener_alimento(char* alimento){
 
-char obtener_alimento(){
-	char alimento;
-
-	preguntar_alimento_favorito();
-	scanf("%c", &alimento);
+	printf("Solo podes guardar un alimento en tu vianda: Bambú (B), Pescado (P), Focas (F) ");
+	scanf("%c", alimento);
 	
-	while (!es_alimento_valido(alimento)){
+	while (!es_alimento_valido(*alimento)){
 		printf("ERROR! Alimento no válido, ingresa un alimento válido: ");
-		scanf(" %c", &alimento);
+		scanf(" %c", alimento);
 	}
-
-	return alimento;
 }
 
-int obtener_piso_elegido(){
-	int piso_elegido;
+void obtener_piso_elegido(int* piso_elegido){
 
-	preguntar_piso_preferido();
-	scanf(" %i", &piso_elegido);
+	printf ("Te compras una torre con tus dos hermanos de 18 pisos. ¿En que piso te gustaría vivir? ");
+	scanf(" %i", piso_elegido);
 	
-	while (!es_piso_elegido_valido(piso_elegido)){
+	while (!es_piso_elegido_valido(*piso_elegido)){
 		printf("ERROR! Ingresa un piso dentro del rango (1 a 18): ");
-		scanf(" %i", &piso_elegido);
+		scanf(" %i", piso_elegido);
 	}
 
-	return piso_elegido;
 }
 
-int obtener_fuerza_grito(){
-	int fuerza_grito;
-	preguntar_fuerza_grito();
-	scanf(" %i", &fuerza_grito);
+void obtener_fuerza_grito(int* fuerza_grito){
 
-	while (!es_fuerza_grito_valida(fuerza_grito)){
+	printf("¡Oh, una rata! ¿Que tan fuerte gritas del 1 al 18? Siendo 1 no gritar y 18 desgarrarse la garganta.");
+	scanf(" %i", fuerza_grito);
+
+	while (!es_fuerza_grito_valida(*fuerza_grito)){
 		printf("ERROR! Ese es un grito que los escandalosos no pueden escuchar, el grito debe ser entre 1 a 18: ");
-		scanf(" %i", &fuerza_grito);
+		scanf(" %i", fuerza_grito);
 	}
-
-	return fuerza_grito;
-
 }
 int calcular_multiplicador_canal_tv(char canal_elegido){
 
@@ -181,15 +153,15 @@ int main (){
 
 	int piso_elegido;
 	int fuerza_grito;
+	
+	obtener_canal_tv(&canal_tv);
 
-	canal_tv=obtener_canal_tv();
+	obtener_alimento(&alimento);
 
-	alimento=obtener_alimento();
+	obtener_piso_elegido(&piso_elegido);
 
-	piso_elegido=obtener_piso_elegido();
-
-	fuerza_grito=obtener_fuerza_grito();
+	obtener_fuerza_grito(&fuerza_grito);
 
 	mostrar_personaje_coincidente(piso_elegido,fuerza_grito,canal_tv,alimento);
-
+	
 }
