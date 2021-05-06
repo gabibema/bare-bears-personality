@@ -1,17 +1,17 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-const char ANIME = 'A';
-const char LIMPIEZA = 'L';
-const char MUSICA_POP = 'M';
-
-const char BAMBU = 'B';
-const char FOCAS = 'F';
-const char PESCADO = 'P';
-
 const char POLAR = 'I';
 const char PANDA = 'P';
 const char PARDO = 'G';
+
+const char LIMPIEZA = 'L';
+const char ANIME = 'A';
+const char MUSICA_POP = 'M';
+
+const char FOCAS = 'F';
+const char BAMBU = 'B';
+const char PESCADO = 'P';
 
 const char BIENVENIDA = 'B';
 
@@ -21,13 +21,24 @@ const int PISO_MAS_ALTO = 18;
 const int GRITO_MINIMO = 1;
 const int GRITO_MAXIMO = 18;
 
+const int MULTIPLICADOR_LIMPIEZA=1;
+const int MULTIPLICADOR_ANIME=2;
+const int MULTIPLICADOR_MUSICA_POP=3;
+
+const int PUNTAJE_FOCAS = 3;
+const int PUNTAJE_BAMBU = 6;
+const int PUNTAJE_PESCADO = 9;
+
 const int PUNTAJE_MINIMO_POLAR = 5;
 const int PUNTAJE_MAXIMO_POLAR = 24;
 const int PUNTAJE_MINIMO_PANDA = 25;
 const int PUNTAJE_MAXIMO_PANDA = 43;
 
+const int PUNTAJE_MINIMO = 5;
+const int PUNTAJE_MAXIMO = 63;
+
 /*
- * Pre: El carácter sea BIENVENIDA, POLAR, PARDO o PANDA.
+ * Pre: Imagen sea BIENVENIDA, POLAR, PARDO o PANDA.
  * Pos: Imprime una imagen dependiendo del carácter ingresado.
  */
 
@@ -276,7 +287,7 @@ void mostrar_imagen(char imagen){
 /*
  * Pre: -
  * Pos: Devuelve True si el canal_tv es ANIME, MUSICA_POP o LIMPIEZA. 
- * 		Devuelve false en caso contrario.
+ * 		Devuelve False en caso contrario.
  */
 
 bool es_canal_valido (char canal_tv){
@@ -284,8 +295,8 @@ bool es_canal_valido (char canal_tv){
 }
 
 /*
- * Pre:
- * Pos:
+ * Pre: -
+ * Pos: La variable asociada se modificará a ANIME, MUSICA_POP o LIMPIEZA.
  */
 
 void solicitar_canal_tv(char* canal_tv){
@@ -302,7 +313,7 @@ void solicitar_canal_tv(char* canal_tv){
 /*
  * Pre: -
  * Pos: Devuelve True si el alimento es BAMBU, PESCADO o FOCAS. 
- * 		Devuelve false en caso contrario.
+ * 		Devuelve False en caso contrario.
  */
 
 bool es_alimento_valido (char alimento){
@@ -310,8 +321,8 @@ bool es_alimento_valido (char alimento){
 }
 
 /*
- * Pre:
- * Pos:
+ * Pre: -
+ * Pos: Modifica la variable por FOCAS, BAMBU o PESCADO
  */
 
 void solicitar_alimento(char* alimento){
@@ -327,35 +338,35 @@ void solicitar_alimento(char* alimento){
 
 /*
  * Pre: -
- * Pos: Devuelve True si el piso_elegido está dentro del rango.
- * 		Devuelve false en caso contrario.
+ * Pos: Devuelve True si el piso_torre está entre PISO_MAS_BAJO y PISO_MAS_ALTO.
+ * 		Devuelve False en caso contrario.
  */
 
-bool es_piso_elegido_valido (int piso_elegido){
-	return (piso_elegido>=PISO_MAS_BAJO && piso_elegido<=PISO_MAS_ALTO);
+bool es_piso_torre_valido (int piso_torre){
+	return (piso_torre>=PISO_MAS_BAJO && piso_torre<=PISO_MAS_ALTO);
 }
 
 /*
- * Pre:
- * Pos:
+ * Pre: - 
+ * Pos: Modifica variable asociada por un valor entre PISO_MAS_BAJO y PISO_MAS_ALTO.
  */
 
-void solicitar_piso_elegido(int* piso_elegido){
+void solicitar_piso_torre(int* piso_torre){
 
 	printf ("\n\nTe compras una torre con tus dos hermanos de 18 pisos. ¿En que piso te gustaría vivir? ");
-	scanf(" %i", piso_elegido);
+	scanf(" %i", piso_torre);
 	
-	while (!es_piso_elegido_valido(*piso_elegido)){
+	while (!es_piso_torre_valido(*piso_torre)){
 		printf("ERROR!!! Polar está furioso! Ingresa un piso válido (1 a 18) o Polar no se calmará: ");
-		scanf(" %i", piso_elegido);
+		scanf(" %i", piso_torre);
 	}
 
 }
 
 /*
  * Pre: -
- * Pos: Devuelve True si la fuerza_grito está dentro del rango.
- * 		Devuelve false en caso contrario.
+ * Pos: Devuelve True si la fuerza_grito está entre GRITO_MINIMO y GRITO_MAXIMO.
+ * 		Devuelve False en caso contrario.
  */
 
 bool es_fuerza_grito_valida (int fuerza_grito){
@@ -363,8 +374,8 @@ bool es_fuerza_grito_valida (int fuerza_grito){
 }
 
 /*
- * Pre:
- * Pos:
+ * Pre: -
+ * Pos: La variable asociada estará entre GRITO_MINIMO y GRITO_MAXIMO.
  */
 
 void solicitar_fuerza_grito(int* fuerza_grito){
@@ -379,8 +390,8 @@ void solicitar_fuerza_grito(int* fuerza_grito){
 }
 
 /*
- * Pre:
- * Pos:
+ * Pre: El canal_elegido sea LIMPIEZA, ANIME o MUSICA_POP
+ * Pos: Devuelve un entero asociado al multiplicador del canal_elegido
  */
 
 int calcular_multiplicador_canal_tv(char canal_elegido){
@@ -388,21 +399,21 @@ int calcular_multiplicador_canal_tv(char canal_elegido){
 	int multiplicador_canal;
 
 	if ( (canal_elegido==LIMPIEZA)){
-		multiplicador_canal=1;
+		multiplicador_canal=MULTIPLICADOR_LIMPIEZA;
 	} 
 	else if ( (canal_elegido==ANIME) ){
-		multiplicador_canal=2;
+		multiplicador_canal=MULTIPLICADOR_ANIME;
 	}
 	else if ( (canal_elegido==MUSICA_POP) ){
-		multiplicador_canal=3;
+		multiplicador_canal=MULTIPLICADOR_MUSICA_POP;
 	}
 
 	return multiplicador_canal;
 }
 
 /*
- * Pre:
- * Pos:
+ * Pre: El alimento sea FOCAS, BAMBU o PESCADO
+ * Pos: Devuelve el puntaje correspondiente a cada alimento
  */
 
 int calcular_puntaje_alimento (char alimento){
@@ -410,13 +421,11 @@ int calcular_puntaje_alimento (char alimento){
 	int puntaje_alimento;
 
 	if ( (alimento==FOCAS)){
-		puntaje_alimento=3;
-	} 
-	else if ( (alimento==BAMBU) ){
-		puntaje_alimento=6;
-	}
-	else if ( (alimento==PESCADO) ){
-		puntaje_alimento=9;
+		puntaje_alimento=PUNTAJE_FOCAS;
+	} else if ( (alimento==BAMBU) ){
+		puntaje_alimento=PUNTAJE_BAMBU;
+	} else {
+		puntaje_alimento=PUNTAJE_PESCADO;
 	}
 
 	return puntaje_alimento;
@@ -424,48 +433,53 @@ int calcular_puntaje_alimento (char alimento){
 }
 
 /*
- * Pre:
- * Pos:
+ * Pre: El piso_torre esté entre PISO_MAS_BAJO y PISO_MAS_ALTO .
+ *		La fuerza_grito esté entre GRITO_MINIMO y GRITO_MAXIMO.
+ *		El multiplicador de canal sea MULTIPLICADOR_LIMPIEZA, MULTIPLICADOR_MUSICA_POP o MULTIPLICADOR_ANIME.
+ *		El puntaje_alimento sea PUNTAJE_FOCAS, PUNTAJE_BAMBU o PUNTAJE_PESCADO.
+ * Pos:	Devuelve un puntaje entre PUNTAJE_MINIMO y PUNTAJE_MAXIMO.
  */
 
-int calcular_puntaje_total (int piso_elegido, int fuerza_grito, int multiplicador_canal_tv, int puntaje_alimento){
+int calcular_puntaje_total (int piso_torre, int fuerza_grito, int multiplicador_canal_tv, int puntaje_alimento){
 
-	int puntaje_total = (puntaje_alimento * multiplicador_canal_tv) + piso_elegido + fuerza_grito;
+	int puntaje_total = (puntaje_alimento * multiplicador_canal_tv) + piso_torre + fuerza_grito;
 
 	return puntaje_total;
 
 }
 
 /*
- * Pre:
- * Pos:
+ * Pre: El piso_torre esté entre PISO_MAS_BAJO y PISO_MAS_ALTO .
+ *		La fuerza_grito esté entre GRITO_MINIMO y GRITO_MAXIMO.
+ *		El canal sea ANIME, LIMPIEZA o MUSICA_POP.
+ *		El alimento sea BAMBU, FOCAS o PESCADO.
+ * Pos: Imprime por pantalla el personaje coincidente con el usuario.
  */
 
-void mostrar_personaje_coincidente (int piso_elegido,int fuerza_grito,char canal,char alimento) {
+void mostrar_personalidad_escandalosa (int piso_torre,int fuerza_grito,char canal,char alimento) {
 
-	int multiplicador_canal_tv=calcular_multiplicador_canal_tv(canal);
-
-	int puntaje_alimento= calcular_puntaje_alimento(alimento);
-
-	int puntaje_total= calcular_puntaje_total (piso_elegido,fuerza_grito,multiplicador_canal_tv,puntaje_alimento);
+	int multiplicador_canal_tv = calcular_multiplicador_canal_tv(canal);
+	int puntaje_alimento = calcular_puntaje_alimento(alimento);
+	int puntaje_total = calcular_puntaje_total (piso_torre,fuerza_grito,multiplicador_canal_tv,puntaje_alimento);
 
 	printf("\n ---------- Después de un arduo análisis , se determino que la personalidad más adecuada para definirte es ------------ \n\n");
+
 	if ( (puntaje_total >= PUNTAJE_MINIMO_POLAR ) && (puntaje_total <= PUNTAJE_MAXIMO_POLAR) ){
 
 		mostrar_imagen(POLAR);
-	
 		printf("- Polar -Alonzo Corazón de tigre- (I) - \n\nSos el menor de los tres hermanos, casi siempre estas en tu mundo y no decis una palabra. Pero aunque seas un oso de pocas palabras, no hay que subestimarte. Posees un montón de talentos ocultos y hacer todo el trabajo sucio de los osos.");
+		
 	} else if ( (puntaje_total >= PUNTAJE_MINIMO_PANDA ) && (puntaje_total <= PUNTAJE_MAXIMO_PANDA ) ){
 
 		mostrar_imagen(PANDA);
-	
 		printf (" - Panda (P) - \n\nSos el hermano del medio y no te parecés en nada a tus hermanos. A ellos les gusta bailar; vos te quedas contra la pared. Ellos comen carne; vos sos vegetariano. Participas voluntariamente en casi todas las ideas de Pardo, aunque seas un poco más inteligente.");
-	} else if ( (puntaje_total >= 44) && (puntaje_total <= 63) ){
+
+	} else {
 
 		mostrar_imagen(PARDO);
+		printf(" - Pardo (G) -\n\n Sos el mayor de los hermanos, un líder carismático, alegre y muy motivado. A lo mejor comiste pintura siendo osezno, nadie lo sabe. Te encanta divertirte y no tomarte nunca la vida demasiado en serio. Te dan miedo los pepinos. ");
 	}
 
-		printf(" - Pardo (G) -\n\n Sos el mayor de los hermanos, un líder carismático, alegre y muy motivado. A lo mejor comiste pintura siendo osezno, nadie lo sabe. Te encanta divertirte y no tomarte nunca la vida demasiado en serio. Te dan miedo los pepinos. ");
 }
 
 int main (){
@@ -473,16 +487,18 @@ int main (){
 	char canal_tv;
 	char alimento;
 
-	int piso_elegido;
+	int piso_torre;
 	int fuerza_grito;
 	
 	mostrar_imagen(BIENVENIDA);
 
 	solicitar_canal_tv(&canal_tv);
 	solicitar_alimento(&alimento);
-	solicitar_piso_elegido(&piso_elegido);
+	solicitar_piso_torre(&piso_torre);
 	solicitar_fuerza_grito(&fuerza_grito);
 
-	mostrar_personaje_coincidente(piso_elegido,fuerza_grito,canal_tv,alimento);
+	mostrar_personalidad_escandalosa(piso_torre,fuerza_grito,canal_tv,alimento);
+
+	return 0;
 
 }
